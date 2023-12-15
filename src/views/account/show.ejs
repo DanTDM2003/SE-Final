@@ -1,0 +1,91 @@
+<%- include('../partials/head.ejs') %>
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/nav.ejs') %>
+
+<div class="my-account">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="account-nav" data-toggle="pill" href="#account-tab" role="tab">Account Details</a>
+                    <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab">Subscribed List</a>
+                    <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab">Comments</a>
+                    <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab">Address</a>
+                    <a class="nav-link" href="/logout">Logout</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
+                        <h4>Account Details</h4>
+                        <form class="row">
+                            <div class="col-md-6">
+                                <input type="text" placeholder="Username" value="<%= login.Username %>">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" placeholder="Fullname" value="<%= login.Fullname %>">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" placeholder="Mobile" value="<%= login.Mobile %>">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" placeholder="Email" value="<%= login.Email %>">
+                            </div>
+                            <div class="col-md-12">
+                                <button>Update Account</button>
+                                <br><br>
+                            </div>
+                        </form>
+                        <h4>Password change</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="password" placeholder="Current Password">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" placeholder="New Password">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" placeholder="Confirm Password">
+                            </div>
+                            <div class="col-md-12">
+                                <button>Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
+                        <h4>Subscribed List</h4>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                        </p> 
+                    </div>
+                    <div class="tab-pane fade" id="payment-tab" role="tabpanel" aria-labelledby="payment-nav">
+                        <h4>Comments</h4>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                        </p> 
+                    </div>
+                    <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                        <h4>Address</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Payment Address</h5>
+                                <p>123 Payment Street, Los Angeles, CA</p>
+                                <p>Mobile: 012-345-6789</p>
+                                <button>Edit Address</button>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Shipping Address</h5>
+                                <p>123 Shipping Street, Los Angeles, CA</p>
+                                <p>Mobile: 012-345-6789</p>
+                                <button>Edit Address</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>

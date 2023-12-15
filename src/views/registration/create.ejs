@@ -1,0 +1,62 @@
+<%- include('../partials/head.ejs') %>
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/nav.ejs') %>
+
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item active">Login</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Register Start -->
+<div class="register">  
+    <div style="padding-top: 80px; padding-bottom: 80px;" class="container border border-3 rounded-3">
+        <div class="section-header">
+            <h3>Welcome To Registration Website</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra at massa sit amet ultricies. Nullam consequat, mauris non interdum cursus
+            </p>
+        </div>
+        <div class="w-100">    
+            <form method="POST" action="/register" class="register-form">
+                <div class="d-flex flex-column align-items-center justify-content-center w-100">
+                    <div class="d-flex flex-column align-items-center justify-content-center w-100">
+                        <div class="w-50">
+                            <label for="Fullname">Fullname</label>
+                            <input class="form-control" name="Fullname" id="Fullname" type="text" placeholder="Fullname..." required>
+                        </div>
+                        <div class="w-50">
+                            <label for="Username">Username</label>
+                            <input class="form-control" name="Username" id="Username" type="text" placeholder="Username..." required>
+                        </div>
+                        <div class="w-50">
+                            <label for="Password">Password</label>
+                            <input class="form-control" name="Password" id="Password" type="password" placeholder="Password..." required>
+                        </div>
+                        <div class="w-50">
+                            <label for="Email">E-mail</label>
+                            <input class="form-control" name="Email" id="Email" type="email" placeholder="E-mail..." required>
+                        </div>
+                        <span class="w-50" style="font-size: 13px;">Already have an account? <a href="/login">Sign in</a></span>
+                        <% for (let error in errors) { %>
+                            <span class="w-50 text-danger" style="font-size: 13px;"><%= errors[error] %></span>
+                        <% } %>
+                    </div>
+                    <div class="w-50 mt-4">
+                        <button class="btn">Sign up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Register End -->
+
+<%- include('../partials/footer.ejs') %>

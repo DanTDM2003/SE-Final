@@ -1,0 +1,45 @@
+<div class="top-header">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-md-3">
+                <div class="logo">
+                    <a class="d-flex justify-content-start align-items-center" style="text-decoration: none;" href="/">
+                        <img src="/img/logo.png" alt="Logo" />
+                        <span class="fs-4 fw-bolder">Mealy.vn</span>
+                    </a>
+                </div>
+            </div>
+
+            <% if (title === "Restaurants") { %>
+                <div class="col-md-6">
+                    <div class="search">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            <% } %>
+            <div class="col-md-3">
+                <div class="user">
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= login ? login.Username : 'Guest' %></a>
+                        <% if (!login) { %>
+                            <div class="dropdown-menu rounded-2">
+                                <a href="/login" class="dropdown-item <%= url === '/login' ? 'active' : '' %>">Login</a>
+                                <a href="/register" class="dropdown-item <%= url === '/register' ? 'active' : '' %>">Register</a>
+                            </div>
+                        <% } else { %>
+                            <div class="dropdown-menu rounded-2">
+                                <a href="/<%= login.Username %>" class="dropdown-item">My Account</a>
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="cart">
+                        <i class="fa fa-cart-plus"></i>
+                        <span>(0)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

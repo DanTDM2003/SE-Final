@@ -1,0 +1,21 @@
+<div class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a href="#" class="navbar-brand">MENU</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav m-auto">
+                    <a href="/" class="nav-item nav-link <%= url === '/' ? 'active' : '' %>">Home</a>
+                    <a href="/restaurants" class="nav-item nav-link <%= url === '/restaurants' ? 'active' : '' %>">Restaurants</a>
+                    <a href="/contact" class="nav-item nav-link <%= url === '/contact' ? 'active' : '' %>">Contact Us</a>
+                    <% if (login && login.Role === "Admin") { %>
+                        <a href="/admin/dashboard" class="nav-item nav-link <%= url === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+                    <% } %>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
