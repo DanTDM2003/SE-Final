@@ -2,21 +2,14 @@ const db = require('../db.js');
 const cn = require('../config/database.js');
 
 
-const tbName = 'Users';
+const tbName = `Restaurants`;
 
-module.exports = class User {
-    constructor(user) {
-        this.Fullname = user.Fullname;
-        this.Username = user.Username;
-        this.Password = user.Password;
-        this.Email = user.Email;
-    }
-
+module.exports = class Restaurant {
     static async findAll(attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const user = await con.any(`SELECT $1:name FROM "${tbName}"`, [attributes]);
+            const user = await con.any(`SELECT $1:name FROM "Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id`, [attributes]);
             return user;
         } catch (error) {
             throw error;
@@ -31,7 +24,7 @@ module.exports = class User {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}" WHERE "Email" = $2`, [attributes, user.Email]);
+            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}" JOIN "Users" ON "Users".id = "${tbName}"."Owner_id"`, [attributes]);
             return users;
         } catch (error) {
             throw error;

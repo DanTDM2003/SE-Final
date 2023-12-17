@@ -18,18 +18,22 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
                         <h4>Account Details</h4>
-                        <form class="row">
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Username" value="<%= login.Username %>">
+                        <form method="POST" action="/user/update" class="row">
+                            <input type="hidden" name="id" value="<%= user.id %>">
+                            <div class="col-md-12 mb-1 ms-1">
+                                <span class="fw-bold">Role: <%= login.Role %></span>
+                            </div>
+                            <div class="col-md-12 mb-2 ms-1">
+                                <span class="fw-bold">Email: <%= user.Email %></span>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" placeholder="Fullname" value="<%= login.Fullname %>">
+                                <input type="text" placeholder="Username" name="Username" value="<%= user.Username %>">
                             </div>
                             <div class="col-md-6">
-                                <input type="tel" placeholder="Mobile" value="<%= login.Mobile %>">
+                                <input type="text" placeholder="Fullname" name="Fullname" value="<%= user.Fullname %>">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" placeholder="Email" value="<%= login.Email %>">
+                                <input type="tel" placeholder="Mobile" name="Mobile" value="<%= user.Mobile %>">
                             </div>
                             <div class="col-md-12">
                                 <button>Update Account</button>
@@ -37,20 +41,25 @@
                             </div>
                         </form>
                         <h4>Password change</h4>
-                        <div class="row">
+                        <form method="POST" action="/user/update" class="row">
+                            <input type="hidden" name="id" value="<%= user.id %>">
+                            <input type="hidden" name="change" value="Password">
                             <div class="col-md-12">
-                                <input type="password" placeholder="Current Password">
+                                <input type="password" name="CurrentPassword" placeholder="Current Password">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" placeholder="New Password">
+                                <input type="text" name="NewPassword" placeholder="New Password">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" placeholder="Confirm Password">
+                                <input type="text" name="ConfirmPassword" placeholder="Confirm Password">
                             </div>
+                            <% for (let error in errors) { %>
+                                <span class="w-50 text-danger mb-2" style="font-size: 13px;"><%= errors[error] %></span>
+                            <% } %>
                             <div class="col-md-12">
                                 <button>Save Changes</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="tab-pane fade" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
                         <h4>Subscribed List</h4>

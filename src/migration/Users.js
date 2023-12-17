@@ -9,13 +9,18 @@ module.exports = async () => {
             if (!exists) {
                 const createTableQuery = `CREATE TABLE "Users" (
                     id SERIAL PRIMARY KEY NOT NULL,
-                    "Fullname" VARCHAR,
-                    "Username" VARCHAR,
-                    "Mobile" VARCHAR,
-                    "Password" VARCHAR,
-                    "Email" VARCHAR,
-                    "Role" VARCHAR
-                );`;
+                    "Fullname" TEXT,
+                    "Username" TEXT,
+                    "Mobile" TEXT,
+                    "Password" TEXT,
+                    "Email" TEXT,
+                    "Role" TEXT
+                );
+                
+                INSERT INTO "Users"("Fullname","Username","Password","Email","Role")
+                VALUES  ('Hưng','DanTDM2003','$2b$10$NGuiSA8WTiiHsP6hHx/aKO4c2Gjks2Rs/eufkXtYC.gpNwFvjZEhS','hung@gmail.com','Admin'),
+                        ('Hưng','Hưng đẹp trai','$2b$10$NGuiSA8WTiiHsP6hHx/aKO4c2Gjks2Rs/eufkXtYC.gpNwFvjZEhS','hung1@gmail.com','Restaurant')
+                `;
 
                 return cn.connection.query(createTableQuery)
                     .then(() => {

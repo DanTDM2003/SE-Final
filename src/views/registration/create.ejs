@@ -36,13 +36,27 @@
                             <label for="Username">Username</label>
                             <input class="form-control" name="Username" id="Username" type="text" placeholder="Username..." required>
                         </div>
-                        <div class="w-50">
-                            <label for="Password">Password</label>
-                            <input class="form-control" name="Password" id="Password" type="password" placeholder="Password..." required>
+                        <div class="w-50 d-flex justify-content-center gap-3">
+                            <div class="w-50">
+                                <label for="Password">Password</label>
+                                <input class="form-control" name="Password" id="Password" type="password" placeholder="Password..." required>
+                            </div>
+                            
+                            <div class="w-50">
+                                <label for="Role">Role</label>
+                                <select class="form-select form-control" name="Role" id="Role" aria-label=".form-select-lg example">
+                                    <option selected value="User">User</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                </select>
+                            </div>
+                            
                         </div>
                         <div class="w-50">
                             <label for="Email">E-mail</label>
                             <input class="form-control" name="Email" id="Email" type="email" placeholder="E-mail..." required>
+                        </div>
+                        <div class="w-50">
+                            
                         </div>
                         <span class="w-50" style="font-size: 13px;">Already have an account? <a href="/login">Sign in</a></span>
                         <% for (let error in errors) { %>

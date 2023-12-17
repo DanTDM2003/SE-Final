@@ -1,6 +1,8 @@
 const JWTAction = require('./JWTAction.js');
 const Cookies = require('./Cookies.js');
 const UsersMigration = require('../migration/Users.js');
+const RestaurantsMigration = require('../migration/Restaurants.js');
+const CategoriesMigration = require('../migration/Categories.js');
 
 const errors = {
     404: "Sorry. Page not found.",
@@ -21,5 +23,7 @@ module.exports = {
 
     migrate: async () => {
         await UsersMigration();
+        await CategoriesMigration();
+        await RestaurantsMigration();
     }
 }

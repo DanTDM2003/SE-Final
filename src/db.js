@@ -50,7 +50,10 @@ module.exports = {
         let con = null;
         try {
             con = await cn.connection.connect();
-            cn.pgp.helpers.update(obj, null, tbName);
+            let columns = Object.keys(obj);
+            let condition = columns.shift();
+            let sql = cn.pgp.helpers.update(obj, columns, tbName) + `WHERE id = ${condition}`;
+            await con.query(sql);
         } catch (error) {
             throw error;
         } finally {
