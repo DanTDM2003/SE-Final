@@ -4,8 +4,9 @@ module.exports = {
     index: (req, res) => {
         res.render('restaurants/index', {
             title: 'Restaurants',
-            login: req.user,
-            url: req.path
+            login: req.isAuthenticated(),
+            url: req.path,
+            user: req.user
         });
     },
 

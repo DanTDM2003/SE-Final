@@ -8,7 +8,8 @@ module.exports = {
 
         return res.render('dashboard', {
             title: "Dashboard",
-            login: req.user,
+            login: req.isAuthenticated(),
+            user: req.user,
             url: req.path,
             users: users,
             restaurants: restaurants

@@ -19,7 +19,7 @@ module.exports = {
                         return res.render("session/create", {
                                 title: 'Login',
                                 errors: info,
-                                login: req.user,
+                                login: req.isAuthenticated(),
                                 url: req.path
                             });
                 }

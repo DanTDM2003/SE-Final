@@ -5,13 +5,16 @@ const Users = require('../../models/Users.js');
 const RegisterForm = require('../Forms/RegisterForm.js');
 const PasswordForm = require('../Forms/PasswordForm.js');
 
+const helpers = require('../../utilities/helpers.js');
+
 module.exports = {
     create: (req, res) => {
         res.render('registration/create', {
             errors: null,
             title: 'Registration',
             login: null,
-            url: req.path
+            url: req.path,
+            user: req.user
         });
     },
 
@@ -42,7 +45,8 @@ module.exports = {
                 errors: form.getErrors(),
                 title: 'Registration',
                 login: null,
-                url: req.path
+                url: req.path,
+                user: req.user
             });
         }
     },
@@ -51,12 +55,14 @@ module.exports = {
         const user = await Users.findOne({ Email: req.user.Email });
         delete user.Password;
 
+        req.user = user;
+
         return res.render('account/show', {
             errors: null,
             title: "My Account",
-            login: req.user,
+            login: req.isAuthenticated(),
             url: req.path,
-            user: user
+            user: req.user
         });
     },
 
@@ -67,6 +73,11 @@ module.exports = {
     },
 
     update: async (req, res) => {
+        if (req.user.Role !== "Admin") {
+            if (req.body.id != req.user.id) {
+                return helpers.abort(req, res, 401)
+            }
+        }
         const user = await Users.findOne({ Email: req.user.Email });
 
         if (req.body.change) {
@@ -81,6 +92,7 @@ module.exports = {
                     } else {
                         req.body = { id: req.body.id, Password: bcrypt.hashSync(req.body.NewPassword, 10) };
                         await Users.update(req.body);
+                        return res.redirect('back');
                     }
                 }
             }
@@ -88,9 +100,9 @@ module.exports = {
             return res.render('account/show', {
                 errors: form.getErrors(),
                 title: 'My Account',
-                login: req.user,
+                login: req.isAuthenticated(),
                 url: req.path,
-                user: user
+                user: req.user
             });
         }
         await Users.update(Object.assign({ id: req.body.id }, req.body));

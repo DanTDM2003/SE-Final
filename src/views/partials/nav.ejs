@@ -11,7 +11,7 @@
                     <a href="/" class="nav-item nav-link <%= url === '/' ? 'active' : '' %>">Home</a>
                     <a href="/restaurants" class="nav-item nav-link <%= url === '/restaurants' ? 'active' : '' %>">Restaurants</a>
                     <a href="/contact" class="nav-item nav-link <%= url === '/contact' ? 'active' : '' %>">Contact Us</a>
-                    <% if (login && login.Role === "Admin") { %>
+                    <% if (login && user.Role === "Admin") { %>
                         <a href="/admin/dashboard" class="nav-item nav-link <%= url === '/dashboard' ? 'active' : '' %>">Dashboard</a>
                     <% } %>
                 </div>

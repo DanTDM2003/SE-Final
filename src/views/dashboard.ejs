@@ -47,30 +47,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (let [index, user] of users.entries()) { %>
+                                    <% for (let [index, client] of users.entries()) { %>
                                         <tr>
                                             <td><%= index + 1 %></td>
-                                            <td><%= user.Fullname %></td>
-                                            <td><%= user.Username %></td>
-                                            <td><%= user.Email %></td>
+                                            <td><%= client.Fullname %></td>
+                                            <td><%= client.Username %></td>
+                                            <td><%= client.Email %></td>
                                             <td>
-                                                <% if (user.Email !== login.Email) { %>
+                                                <% if (client.Email !== user.Email) { %>
                                                     <form class="change-category" action="/user/update" method="POST">
-                                                        <input type="hidden" name="id" value="<%= user.id %>">
+                                                        <input type="hidden" name="id" value="<%= client.id %>">
                                                         <select name="Role" class="form-select form-select-md" aria-label=".form-select-lg example">
-                                                            <option <%= user.Role === "Admin" ? 'selected' : '' %> value="Admin">Admin</option>
-                                                            <option <%= user.Role === "Restaurant" ? 'selected' : '' %> value="Restaurant">Restaurant</option>
-                                                            <option <%= user.Role === "User" ? 'selected' : '' %> value="User">User</option>
+                                                            <option <%= client.Role === "Admin" ? 'selected' : '' %> value="Admin">Admin</option>
+                                                            <option <%= client.Role === "Restaurant" ? 'selected' : '' %> value="Restaurant">Restaurant</option>
+                                                            <option <%= client.Role === "User" ? 'selected' : '' %> value="User">User</option>
                                                         </select>
                                                     </form>
                                                 <% } else { %>
-                                                    <%= login.Role %>
+                                                    <%= user.Role %>
                                                 <% } %>
                                             </td>
-                                            <% if (user.Email !== login.Email) { %>
+                                            <% if (client.Email !== user.Email) { %>
                                                 <td>
                                                     <form method="POST" action="/user/delete">
-                                                        <input type="hidden" name="id" value="<%= user.id %>">
+                                                        <input type="hidden" name="id" value="<%= client.id %>">
                                                         <button>Delete</button>
                                                     </form>
                                                 </td>
@@ -85,35 +85,39 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="restaurants-tab" role="tabpanel" aria-labelledby="restaurants-nav">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Owner's name</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (let [index, restaurant] of restaurants.entries()) { %>
+                        <% if (restaurants.length === 0) { %>
+                            <span>There is no restaurant that has been created.</span>
+                        <% } else { %>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
                                         <tr>
-                                            <td><%= index + 1 %></td>
-                                            <td><%= restaurant.Name %></td>
-                                            <td><%= restaurant.Fullname %></td>
-                                            <td><%= restaurant.Address %></td>
-                                            <td>
-                                                <form method="POST" action="/restaurant/delete">
-                                                    <input type="hidden" name="id" value="<%= restaurant.id %>">
-                                                    <button>Delete</button>
-                                                </form>
-                                            </td>
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Owner's name</th>
+                                            <th>Address</th>
+                                            <th>Action</th>
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let [index, restaurant] of restaurants.entries()) { %>
+                                            <tr>
+                                                <td><%= index + 1 %></td>
+                                                <td><%= restaurant.Name %></td>
+                                                <td><%= restaurant.Fullname %></td>
+                                                <td><%= restaurant.Address %></td>
+                                                <td>
+                                                    <form method="POST" action="/restaurant/delete">
+                                                        <input type="hidden" name="id" value="<%= restaurant.id %>">
+                                                        <button>Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
             </div>

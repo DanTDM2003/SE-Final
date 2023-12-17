@@ -2,6 +2,8 @@
 <%- include('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %>
 
+
+
 <div class="my-account">
     <div class="container">
         <div class="row">
@@ -10,7 +12,9 @@
                     <a class="nav-link active" id="account-nav" data-toggle="pill" href="#account-tab" role="tab">Account Details</a>
                     <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab">Subscribed List</a>
                     <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab">Comments</a>
-                    <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab">Address</a>
+                    <% if (user.Role === "Restaurant") { %>
+                        <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab">Your Restaurant</a>
+                    <% } %>
                     <a class="nav-link" href="/logout">Logout</a>
                 </div>
             </div>
@@ -21,7 +25,7 @@
                         <form method="POST" action="/user/update" class="row">
                             <input type="hidden" name="id" value="<%= user.id %>">
                             <div class="col-md-12 mb-1 ms-1">
-                                <span class="fw-bold">Role: <%= login.Role %></span>
+                                <span class="fw-bold">Role: <%= user.Role %></span>
                             </div>
                             <div class="col-md-12 mb-2 ms-1">
                                 <span class="fw-bold">Email: <%= user.Email %></span>
@@ -73,24 +77,49 @@
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
                         </p> 
                     </div>
-                    <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
-                        <h4>Address</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Payment Address</h5>
-                                <p>123 Payment Street, Los Angeles, CA</p>
-                                <p>Mobile: 012-345-6789</p>
-                                <button>Edit Address</button>
+
+                    <% if (user.Role === "Restaurant") { %>
+                        <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRestaurant">
+                                Create your restaurant
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="createRestaurant" tabindex="-1" aria-labelledby="createRestaurantForm" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="createRestaurantForm">Modal title</h5>
+                                            <button type="button" class="btn-close bg-transparent text-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h5>Shipping Address</h5>
-                                <p>123 Shipping Street, Los Angeles, CA</p>
-                                <p>Mobile: 012-345-6789</p>
-                                <button>Edit Address</button>
+                            <h4>Address</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Payment Address</h5>
+                                    <p>123 Payment Street, Los Angeles, CA</p>
+                                    <p>Mobile: 012-345-6789</p>
+                                    <button>Edit Address</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Shipping Address</h5>
+                                    <p>123 Shipping Street, Los Angeles, CA</p>
+                                    <p>Mobile: 012-345-6789</p>
+                                    <button>Edit Address</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+                    <% } %>
                 </div>
             </div>
         </div>

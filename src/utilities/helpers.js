@@ -1,5 +1,3 @@
-const JWTAction = require('./JWTAction.js');
-const Cookies = require('./Cookies.js');
 const UsersMigration = require('../migration/Users.js');
 const RestaurantsMigration = require('../migration/Restaurants.js');
 const CategoriesMigration = require('../migration/Categories.js');
@@ -11,12 +9,10 @@ const errors = {
 
 module.exports = {
     abort: (req, res, code=404) => {
-        const user = Cookies.decodeCookie(req.signedCookies.user);
-
         res.status(code).render('error', {
             title: code,
             message: errors[code],
-            login: user ? JWTAction.decodeJWT(user) : null,
+            login: req.user,
             url: req.path
         });
     },
