@@ -2,10 +2,13 @@ const bcrypt = require('bcrypt');
 const he = require('he');
 
 const Users = require('../../models/Users.js');
+const Categories = require('../../models/Categories.js');
+const Restaurants = require('../../models/Restaurants.js');
 const RegisterForm = require('../Forms/RegisterForm.js');
 const PasswordForm = require('../Forms/PasswordForm.js');
 
 const helpers = require('../../utilities/helpers.js');
+
 
 module.exports = {
     create: (req, res) => {
@@ -53,6 +56,8 @@ module.exports = {
 
     show: async (req, res) => {
         const user = await Users.findOne({ Email: req.user.Email });
+        const categories = await Categories.findAll();
+        const restaurant = await Restaurants.findOne({ Owner_id: req.user.id });
         delete user.Password;
 
         req.user = user;
@@ -62,7 +67,9 @@ module.exports = {
             title: "My Account",
             login: req.isAuthenticated(),
             url: req.path,
-            user: req.user
+            user: req.user,
+            categories: categories,
+            restaurant: restaurant
         });
     },
 

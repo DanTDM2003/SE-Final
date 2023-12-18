@@ -2,14 +2,14 @@ const db = require('../db.js');
 const cn = require('../config/database.js');
 
 
-const tbName = `Restaurants`;
+const tbName = `Categories`;
 
 module.exports = class Restaurant {
     static async findAll(attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const user = await con.any(`SELECT $1:name FROM "Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id`, [attributes]);
+            const user = await con.any(`SELECT $1:name FROM "${tbName}"`, [attributes]);
             return user;
         } catch (error) {
             throw error;
@@ -20,12 +20,12 @@ module.exports = class Restaurant {
         }
     }
     
-    static async findOne(restaurant, attributes='*') {
+    static async findOne(user, attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurants = await con.oneOrNone(`SELECT $1:name FROM "Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id" WHERE "Owner_id" = $2`, [attributes, restaurant.Owner_id]);
-            return restaurants;
+            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}"`, [attributes]);
+            return users;
         } catch (error) {
             throw error;
         } finally {
@@ -35,9 +35,9 @@ module.exports = class Restaurant {
         }
     }
 
-    static async add(restaurant) {
+    static async add(user) {
         try {
-            const rt = await db.add(tbName, restaurant);
+            const rt = await db.add(tbName, user);
             return rt;
         } catch (error) {
             throw error;

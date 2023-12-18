@@ -590,7 +590,7 @@ button.btn {
     margin-bottom: 5px;
 }
 
-.product-item .product-content .title a {
+.product-item .product-content a {
     color: #a53b37;
     font-size: 18px;
     font-weight: 600;
@@ -601,17 +601,10 @@ button.btn {
     color: #a53b37;
 }
 
-.product-item .product-content .price {
-    font-size: 30px;
+.product-item .product-content .address {
+    font-size: 16px;
     color: #a53b37;
     font-weight: 700; 
-}
-
-.product-item .product-content .price span {
-    margin-left: 12px;
-    text-decoration: line-through;
-    font-weight: 700;
-    color: #666666;
 }
 
 .product-slider.slick-slider:hover .slick-prev {

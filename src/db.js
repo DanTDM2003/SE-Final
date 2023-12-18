@@ -53,7 +53,6 @@ module.exports = {
             let columns = Object.keys(obj);
             let condition = columns.shift();
             let sql = cn.pgp.helpers.update(obj, columns, tbName) + ` WHERE id = ${ obj.id }`;
-            console.log(sql);
             await con.query(sql);
         } catch (error) {
             throw error;

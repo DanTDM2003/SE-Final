@@ -8,6 +8,7 @@ const RestaurantController = require('../Http/controllers/RestaurantController.j
 const AuthMiddleware = require('../middlewares/Auth.js');
 const GuestMiddleware = require('../middlewares/Guest.js');
 const AdminMiddleware = require('../middlewares/Admin.js');
+const RestaurantMiddleware = require('../middlewares/Restaurant.js');
 
 router.route('/login')
         .get(GuestMiddleware, SessionController.create)
@@ -23,6 +24,8 @@ router.post('/user/delete', AdminMiddleware, AccountController.destroy);
 router.post('/user/update', AuthMiddleware, AccountController.update);
 router.get('/user/information', AuthMiddleware, AccountController.show);
 
-router.post('/restaurant/delete', AuthMiddleware, RestaurantController.destroy);
+router.post('/restaurant/delete', AdminMiddleware, RestaurantController.destroy);
+router.post('/restaurant/create', RestaurantMiddleware, RestaurantController.store);
+router.post('/restaurant/update', RestaurantMiddleware, RestaurantController.update);
 
 module.exports = router;

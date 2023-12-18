@@ -12,8 +12,9 @@ module.exports = {
         res.status(code).render('error', {
             title: code,
             message: errors[code],
-            login: req.user,
-            url: req.path
+            login: req.isAuthenticated(),
+            url: req.path,
+            user: req.user
         });
     },
 

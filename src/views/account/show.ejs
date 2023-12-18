@@ -2,8 +2,6 @@
 <%- include('../partials/header.ejs') %>
 <%- include('../partials/nav.ejs') %>
 
-
-
 <div class="my-account">
     <div class="container">
         <div class="row">
@@ -80,44 +78,78 @@
 
                     <% if (user.Role === "Restaurant") { %>
                         <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRestaurant">
-                                Create your restaurant
-                            </button>
+                            <% if (!restaurant) { %>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRestaurant">
+                                    Create your restaurant
+                                </button>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="createRestaurant" tabindex="-1" aria-labelledby="createRestaurantForm" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="createRestaurantForm">Modal title</h5>
-                                            <button type="button" class="btn-close bg-transparent text-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="createRestaurant" tabindex="-1" aria-labelledby="createRestaurantForm" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div style="background: rgb(239, 243, 250);" class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="createRestaurantForm">Enter Restaurant's Information</h5>
+                                                <button class="btn-close bg-transparent text-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/restaurant/create" method="POST" class="row">
+                                                    <input type="hidden" name="Owner_id" value="<%= user.id %>">
+                                                    <div class="col-md-7">
+                                                        <label for="Name">Restaurant's Name</label>
+                                                        <input type="text" id="Name" name="Name" placeholder="Name..." required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="Category">Category</label>
+                                                        <select class="form-select form-control" name="Category_id" id="Category" aria-label=".form-select-lg example">
+                                                            <% for (let [index, category] of categories.entries()) { %>
+                                                                <% if (index == 0) { %>
+                                                                    <option selected value="<%= category.id %>"><%= category.Name %></option>
+                                                                <% } else { %>
+                                                                    <option value="<%= category.id %>"><%= category.Name %></option>
+                                                                <% } %>
+                                                            <% } %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="Address">Restaurant's Address</label>
+                                                        <input type="text" id="Address" name="Address" placeholder="Address..." required>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="Mobile">Restaurant's Mobile number</label>
+                                                        <input type="text" id="Mobile" name="Mobile" placeholder="Mobile..." required>
+                                                    </div>
+                                                    <div class="modal-footer mt-4">
+                                                        <button type="reset" class="btn btn-secondary">Reset</button>
+                                                        <button class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <h4>Address</h4>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Payment Address</h5>
-                                    <p>123 Payment Street, Los Angeles, CA</p>
-                                    <p>Mobile: 012-345-6789</p>
-                                    <button>Edit Address</button>
+                            <% } else { %>
+                                <h4>My Restaurant</h4>
+                                <div class="row">
+                                    <form method="POST" action="/restaurant/update" class="col-md-12">
+                                        <input type="hidden" name="Owner_id" value="<%= restaurant.Owner_id %>">
+                                        <input type="hidden" name="id" value="<%= restaurant.id %>">
+                                        <h5>Detail</h5>
+                                        <p>Name: <input type="text" placeholder="Name" name="Name" value="<%= restaurant.Name %>"></p>
+                                        <p>Address: <input type="text" placeholder="Address" name="Address" value="<%= restaurant.Address %>"></p>
+                                        <p>Mobile: <input type="text" placeholder="Mobile" name="Mobile" value="<%= restaurant.Mobile %>"></p>
+                                        <p>Category:
+                                            <select name="Category_id" class="form-select form-select-md" aria-label=".form-select-lg example">
+                                                <% for (let category of categories) { %>
+                                                    <option <%= category.Name === categories[restaurant.Category_id - 1].Name ? 'selected' : '' %> value="<%= category.id %>"><%= category.Name %></option>
+                                                <% } %>
+                                            </select><%=  %>
+                                        </p>
+                                        <button type="reset">Reset</button>
+                                        <button>Save</button>
+                                    </form>
                                 </div>
-                                <div class="col-md-6">
-                                    <h5>Shipping Address</h5>
-                                    <p>123 Shipping Street, Los Angeles, CA</p>
-                                    <p>Mobile: 012-345-6789</p>
-                                    <button>Edit Address</button>
-                                </div>
-                            </div>
+                            <% } %>
                         </div>
                     <% } %>
                 </div>
