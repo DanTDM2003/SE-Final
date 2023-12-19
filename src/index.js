@@ -25,7 +25,7 @@ app.use(cookieParser(secret));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.all((req, res, next) => {
     req.path = sanitizeHtml(req.path);
     next();
 });

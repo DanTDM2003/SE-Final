@@ -5,11 +5,11 @@ const cn = require('../config/database.js');
 const tbName = `Restaurants`;
 
 module.exports = class Restaurant {
-    static async findAll(attributes='*') {
+    static async fetchAll(conditions=[ '', '' ]) {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const user = await con.any(`SELECT $1:name FROM "Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id`, [attributes]);
+            const user = await con.any(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile" AS "Owner_Mobile", "Restaurants"."Name" AS restaurant_name, "Restaurants".*, "Categories"."Name" FROM ("Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id) JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE ("Restaurants"."Name" ILIKE '%' || $1 || '%') AND ("Categories"."Name" ILIKE '%' || $2 || '%')`, conditions);
             return user;
         } catch (error) {
             throw error;
@@ -20,11 +20,11 @@ module.exports = class Restaurant {
         }
     }
     
-    static async findOne(restaurant, attributes='*') {
+    static async fetch(restaurant) {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurants = await con.oneOrNone(`SELECT $1:name FROM "Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id" WHERE "Owner_id" = $2`, [attributes, restaurant.Owner_id]);
+            const restaurants = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile" AS "Owner_Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Owner_id" = $1`, [restaurant.Owner_id]);
             return restaurants;
         } catch (error) {
             throw error;

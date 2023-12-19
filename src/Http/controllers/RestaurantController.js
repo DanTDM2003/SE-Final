@@ -5,8 +5,17 @@ const helpers = require('../../utilities/helpers.js');
 
 module.exports = {
     index: async (req, res) => {
-        const restaurants = await Restaurants.findAll();
-        const categories = await Categories.findAll();
+        let conditions = [ '', '' ];
+        if (req.query.search) {
+            conditions[0] = req.query.search;
+        }
+        if (req.query.category) {
+            conditions[1] = req.query.category;
+        }
+        const restaurants = await Restaurants.fetchAll(conditions);
+        const categories = await Categories.fetchAll();
+
+        // console.log(restaurants);
 
         res.render('restaurants/index', {
             title: 'Restaurants',
@@ -14,7 +23,8 @@ module.exports = {
             url: req.path,
             user: req.user,
             restaurants: restaurants,
-            categories: categories
+            categories: categories,
+            query: req.query
         });
     },
 
@@ -23,7 +33,7 @@ module.exports = {
             return helpers.abort(req, res, 401)
         }
 
-        const restaurant = await Restaurants.findOne(req.body);
+        const restaurant = await Restaurants.fetch(req.body);
 
         if (restaurant) {
             return res.redirect('back');

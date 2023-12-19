@@ -5,7 +5,7 @@ const cn = require('../config/database.js');
 const tbName = `Categories`;
 
 module.exports = class Restaurant {
-    static async findAll(attributes='*') {
+    static async fetchAll(attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
@@ -20,7 +20,7 @@ module.exports = class Restaurant {
         }
     }
     
-    static async findOne(user, attributes='*') {
+    static async fetch(user, attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();

@@ -33,7 +33,7 @@ module.exports = {
         Email = he.encode(Email);
 
         if (form.validate(Fullname, Username, Password, Email)) {
-            const user = await Users.findOne({ Email: Email, Password: Password });
+            const user = await Users.fetch({ Email: Email, Password: Password });
             if (!user) {
                 await Users.add({ Fullname, Username, Password: bcrypt.hashSync(Password, 10), Email, Role });
 
@@ -55,9 +55,9 @@ module.exports = {
     },
 
     show: async (req, res) => {
-        const user = await Users.findOne({ Email: req.user.Email });
-        const categories = await Categories.findAll();
-        const restaurant = await Restaurants.findOne({ Owner_id: req.user.id });
+        const user = await Users.fetch({ Email: req.user.Email });
+        const categories = await Categories.fetchAll();
+        const restaurant = await Restaurants.fetch({ Owner_id: req.user.id });
         delete user.Password;
 
         req.user = user;
@@ -85,7 +85,7 @@ module.exports = {
                 return helpers.abort(req, res, 401)
             }
         }
-        const user = await Users.findOne({ Email: req.user.Email });
+        const user = await Users.fetch({ Email: req.user.Email });
 
         if (req.body.change) {
             const form = new PasswordForm();

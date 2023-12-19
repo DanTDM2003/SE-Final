@@ -8,7 +8,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (user, done) => {
-    const auth = await Users.findOne({ Email: user });
+    const auth = await Users.fetch({ Email: user });
     delete auth.Password;
     if (auth) {
         return done(null, auth);
@@ -21,7 +21,7 @@ module.exports = (app) => {
     app.use(passport.session());
     passport.use(new LoginStrategy(async (email, password, done) => {
         try {
-            const user = await Users.findOne({ Email: email });
+            const user = await Users.fetch({ Email: email });
             
             if (user) {
                 const rs = await bcrypt.compare(password, user.Password);

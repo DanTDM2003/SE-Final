@@ -3,8 +3,8 @@ const Restaurants = require('../../models/Restaurants.js');
 
 module.exports = {
     index: async (req, res) => {
-        const users = await Users.findAll(["id", "Fullname", "Username", "Email", "Role"]);
-        const restaurants = await Restaurants.findAll();
+        const users = await Users.fetchAll(["id", "Fullname", "Username", "Email", "Role"]);
+        const restaurants = await Restaurants.fetchAll();
 
         return res.render('dashboard', {
             title: "Dashboard",

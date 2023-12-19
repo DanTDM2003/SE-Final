@@ -12,7 +12,7 @@ module.exports = class User {
         this.Email = user.Email;
     }
 
-    static async findAll(attributes='*') {
+    static async fetchAll(attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
@@ -27,7 +27,7 @@ module.exports = class User {
         }
     }
     
-    static async findOne(user, attributes='*') {
+    static async fetch(user, attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();

@@ -77,6 +77,15 @@
                 item.submit();
             })
         }
+
+        function modifyURL() {
+            const urlObj = new URL(window.location.href);
+            console.log(window.location.href);
+            // Remove the 'page' parameter
+            urlObj.searchParams.delete('page');
+            
+            return urlObj.toString();
+        }
     </script>
 
     
