@@ -97,25 +97,7 @@
                 </div>
             </div>
             
-            
-            
-            <div class="col-md-3">
-                <div class="sidebar-widget category">
-                    <h2 class="title">Category</h2>
-                    <ul>
-                        <% for (let category of categories) { %>
-                            <li><a href="/restaurants?category=<%= category.Name %>"><%= category.Name %></a><span>(83)</span></li>
-                        <% } %>
-                    </ul>
-                </div>
-                
-                <div class="sidebar-widget image">
-                    <h2 class="title">Featured Product</h2>
-                    <a href="#">
-                        <img src="img/category-1.jpg" alt="Image">
-                    </a>
-                </div>
-            </div>
+            <%- include('../partials/sidebar.ejs') %>
         </div>
     </div>
 </div>

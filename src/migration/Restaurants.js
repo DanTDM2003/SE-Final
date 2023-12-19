@@ -12,14 +12,15 @@ module.exports = async () => {
                     "Owner_id" INT,
                     "Name" TEXT,
                     "Category_id" INT,
-                    "Mobile" TEXT,
+                    "Tel" TEXT,
                     "Address" TEXT,
+                    "Description" TEXT,
 
                     FOREIGN KEY ("Owner_id") REFERENCES "Users"(id) ON DELETE CASCADE,
                     FOREIGN KEY ("Category_id") REFERENCES "Categories"(id)
                 );
                 
-                INSERT INTO "Restaurants"("Owner_id","Name","Category_id","Mobile","Address")
+                INSERT INTO "Restaurants"("Owner_id","Name","Category_id","Tel","Address")
                 VALUES  (3,'Hanuri',2,'0901306830','Nguyễn Tri Phương')
                 `;
 

@@ -8,10 +8,10 @@
             <div class="col-md-3">
                 <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="account-nav" data-toggle="pill" href="#account-tab" role="tab">Account Details</a>
-                    <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab">Subscribed List</a>
-                    <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab">Comments</a>
+                    <a class="nav-link" id="subscribed-nav" data-toggle="pill" href="#subscribed-tab" role="tab">Subscribed List</a>
+                    <a class="nav-link" id="comments-nav" data-toggle="pill" href="#comments-tab" role="tab">Comments</a>
                     <% if (user.Role === "Restaurant") { %>
-                        <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab">Your Restaurant</a>
+                        <a class="nav-link" id="restaurant-nav" data-toggle="pill" href="#restaurant-tab" role="tab">Your Restaurant</a>
                     <% } %>
                     <a class="nav-link" href="/logout">Logout</a>
                 </div>
@@ -63,21 +63,43 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane fade" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
+                    <div class="tab-pane fade" id="subscribed-tab" role="tabpanel" aria-labelledby="subscribed-nav">
                         <h4>Subscribed List</h4>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
                         </p> 
                     </div>
-                    <div class="tab-pane fade" id="payment-tab" role="tabpanel" aria-labelledby="payment-nav">
+                    <div class="tab-pane fade" id="comments-tab" role="tabpanel" aria-labelledby="comments-nav">
                         <h4>Comments</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
-                        </p> 
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Restaurant's Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let [index, comment] of comments.entries()) { %>
+                                        <tr>
+                                            <td><%= index + 1 %></td>
+                                            <td><a href="/restaurant/<%= comment.Restaurant_id %>"><%= comment.Name %></a></td>
+                                            <td>
+                                                <form method="POST" action="/comment/delete">
+                                                    <input type="hidden" name="id" value="<%= comment.comment_id %>">
+                                                    <button>Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <% if (user.Role === "Restaurant") { %>
-                        <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                        <div class="tab-pane fade" id="restaurant-tab" role="tabpanel" aria-labelledby="restaurant-nav">
                             <% if (!restaurant) { %>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRestaurant">
@@ -117,7 +139,11 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label for="Mobile">Restaurant's Mobile number</label>
-                                                        <input type="text" id="Mobile" name="Mobile" placeholder="Mobile..." required>
+                                                        <input type="text" id="Tel" name="Tel" placeholder="Tel..." required>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="Description">Restaurant's Description</label>
+                                                        <textarea id="Description" name="Description" placeholder="Description..."></textarea>
                                                     </div>
                                                     <div class="modal-footer mt-4">
                                                         <button type="reset" class="btn btn-secondary">Reset</button>
@@ -137,13 +163,16 @@
                                         <h5>Detail</h5>
                                         <p>Name: <input type="text" placeholder="Name" name="Name" value="<%= restaurant.Name %>"></p>
                                         <p>Address: <input type="text" placeholder="Address" name="Address" value="<%= restaurant.Address %>"></p>
-                                        <p>Mobile: <input type="text" placeholder="Mobile" name="Mobile" value="<%= restaurant.Mobile %>"></p>
+                                        <p>Tel: <input type="tel" placeholder="Tel" name="Tel" value="<%= restaurant.Tel %>"></p>
                                         <p>Category:
                                             <select name="Category_id" class="form-select form-select-md" aria-label=".form-select-lg example">
                                                 <% for (let category of categories) { %>
                                                     <option <%= category.Name === categories[restaurant.Category_id - 1].Name ? 'selected' : '' %> value="<%= category.id %>"><%= category.Name %></option>
                                                 <% } %>
-                                            </select><%=  %>
+                                            </select>
+                                        </p>
+                                        <p>Description:
+                                            <textarea class="col-md-12" id="Description" name="Description" placeholder="Description..."><%= restaurant.Description %></textarea>
                                         </p>
                                         <button type="reset">Reset</button>
                                         <button>Save</button>

@@ -1,5 +1,6 @@
 const Restaurants = require('../../models/Restaurants.js');
 const Categories = require('../../models/Categories.js');
+const Comments = require('../../models/Comments.js');
 
 const helpers = require('../../utilities/helpers.js');
 
@@ -13,7 +14,6 @@ module.exports = {
             conditions[1] = req.query.category;
         }
         let restaurants = await Restaurants.fetchAll(conditions);
-        const categories = await Categories.fetchAll();
 
         const numOfPages = Math.ceil(restaurants.length / 9);
 
@@ -22,6 +22,8 @@ module.exports = {
         } else {
             restaurants = restaurants.slice(0, 9);
         }
+        
+        const categories = await Categories.fetchAll();
 
         res.render('restaurants/index', {
             title: 'Restaurants',
@@ -35,12 +37,26 @@ module.exports = {
         });
     },
 
+    show: async (req, res) => {
+        const restaurant = await Restaurants.fetch(req.params.id);
+        const comments = await Comments.fetchAllWithRestaurantID([ restaurant.id ]);
+        
+        res.render('restaurants/show', {
+            title: restaurant.Name,
+            login: req.isAuthenticated(),
+            url: req.path,
+            user: req.user,
+            restaurant: restaurant,
+            comments: comments
+        });
+    },
+
     store: async (req, res) => {
         if (req.body.Owner_id != req.user.id) {
             return helpers.abort(req, res, 401)
         }
 
-        const restaurant = await Restaurants.fetch(req.body);
+        const restaurant = await Restaurants.find(req.body);
 
         if (restaurant) {
             return res.redirect('back');
