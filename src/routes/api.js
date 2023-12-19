@@ -5,6 +5,7 @@ const SessionController = require('../Http/controllers/SessionController.js');
 const AccountController = require('../Http/controllers/AccountController.js');
 const RestaurantController = require('../Http/controllers/RestaurantController.js');
 const CommentController = require('../Http/controllers/CommentController.js');
+const SubscribedController = require('../Http/controllers/SubscribedController.js');
 
 const AuthMiddleware = require('../middlewares/Auth.js');
 const GuestMiddleware = require('../middlewares/Guest.js');
@@ -25,10 +26,12 @@ router.post('/user/delete', AdminMiddleware, AccountController.destroy);
 router.post('/user/update', AuthMiddleware, AccountController.update);
 router.get('/user/information', AuthMiddleware, AccountController.show);
 
-router.get('/restaurant/:id', RestaurantController.show);
+router.post('/subscribed', AuthMiddleware, SubscribedController.store);
+
 router.post('/comment/create', AuthMiddleware, CommentController.store);
 router.post('/comment/delete', AuthMiddleware, CommentController.destroy);
 
+router.get('/restaurant/:id', RestaurantController.show);
 router.post('/restaurant/delete', AdminMiddleware, RestaurantController.destroy);
 router.post('/restaurant/create', RestaurantMiddleware, RestaurantController.store);
 router.post('/restaurant/update', RestaurantMiddleware, RestaurantController.update);

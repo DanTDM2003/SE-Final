@@ -65,12 +65,6 @@
                     </div>
                     <div class="tab-pane fade" id="subscribed-tab" role="tabpanel" aria-labelledby="subscribed-nav">
                         <h4>Subscribed List</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
-                        </p> 
-                    </div>
-                    <div class="tab-pane fade" id="comments-tab" role="tabpanel" aria-labelledby="comments-nav">
-                        <h4>Comments</h4>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead class="thead-dark">
@@ -81,10 +75,47 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% for (let [index, subscribed_restaurant] of subscribed_restaurants.entries()) { %>
+                                        <tr>
+                                            <td><%= index + 1 %></td>
+                                            <td><a href="/restaurant/<%= subscribed_restaurant.Restaurant_id %>"><%= subscribed_restaurant.Name %></a></td>
+                                            <td>
+                                                <form method="POST" action="/subscribed/delete">
+                                                    <input type="hidden" name="User_id" value="<%= user.id %>">
+                                                    <input type="hidden" name="Restaurant_id" value="<%= subscribed_restaurant.Restaurant_id %>">
+                                                    <button>Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="comments-tab" role="tabpanel" aria-labelledby="comments-nav">
+                        <h4>Comments</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Restaurant's Name</th>
+                                        <th>Rating</th>
+                                        <th>Content</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     <% for (let [index, comment] of comments.entries()) { %>
                                         <tr>
                                             <td><%= index + 1 %></td>
                                             <td><a href="/restaurant/<%= comment.Restaurant_id %>"><%= comment.Name %></a></td>
+                                            <td>
+                                                <% for (let i = 0; i < comment.Rating; i++) { %>
+                                                    <i class="fa fa-star"></i>
+                                                <% } %>
+                                            </td>
+                                            <td><%= comment.Review %></td>
                                             <td>
                                                 <form method="POST" action="/comment/delete">
                                                     <input type="hidden" name="id" value="<%= comment.comment_id %>">

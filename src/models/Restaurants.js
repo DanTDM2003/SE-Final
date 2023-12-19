@@ -20,7 +20,7 @@ module.exports = class Restaurant {
         }
     }
     
-    static async fetch(id) {
+    static async fetchWithRestaurantID(id) {
         let con = null;
         try {
             con = await cn.connection.connect();
@@ -35,11 +35,11 @@ module.exports = class Restaurant {
         }
     }
     
-    static async find(restaurantInfo) {
+    static async fetchWithOwnerID(id) {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile" AS "Owner_Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Owner_id" = $1`, [restaurantInfo.Owner_id]);
+            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Owner_id" = $1`, [id]);
             return restaurant;
         } catch (error) {
             throw error;

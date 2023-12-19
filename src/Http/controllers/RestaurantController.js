@@ -38,7 +38,7 @@ module.exports = {
     },
 
     show: async (req, res) => {
-        const restaurant = await Restaurants.fetch(req.params.id);
+        const restaurant = await Restaurants.fetchWithRestaurantID(req.params.id);
         const comments = await Comments.fetchAllWithRestaurantID([ restaurant.id ]);
         
         res.render('restaurants/show', {
@@ -56,7 +56,7 @@ module.exports = {
             return helpers.abort(req, res, 401)
         }
 
-        const restaurant = await Restaurants.find(req.body);
+        const restaurant = await Restaurants.fetchWithOwnerID(req.body.Owner_id);
 
         if (restaurant) {
             return res.redirect('back');

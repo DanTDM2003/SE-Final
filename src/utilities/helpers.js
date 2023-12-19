@@ -2,10 +2,12 @@ const UsersMigration = require('../migration/Users.js');
 const RestaurantsMigration = require('../migration/Restaurants.js');
 const CategoriesMigration = require('../migration/Categories.js');
 const CommentsMigration = require('../migration/Comments.js');
+const SubscribedMigration = require('../migration/Subscribed.js');
 
 const errors = {
     404: "Sorry. Page not found.",
-    401: "You are unauthorized to see this page."
+    401: "You are unauthorized to see this page.",
+    406: "Not Acceptable."
 }
 
 module.exports = {
@@ -24,5 +26,6 @@ module.exports = {
         await CategoriesMigration();
         await RestaurantsMigration();
         await CommentsMigration();
+        await SubscribedMigration();
     }
 }

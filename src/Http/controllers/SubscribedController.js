@@ -1,4 +1,4 @@
-const Comments = require('../../models/Comments.js');
+const Subscribed = require('../../models/Subscribed.js');
 const Restaurants = require('../../models/Restaurants.js');
 
 const helpers = require('../../utilities/helpers.js');
@@ -14,7 +14,10 @@ module.exports = {
             return helpers.abort(406);
         }
 
-        await Comments.add(req.body);
+        if (!(await Subscribed.fetchAll([ req.body.User_id, req.body.id ]))) {
+            await Subscribed.add(req.body);
+        }
+        
         res.redirect('back');
     },
 
@@ -23,12 +26,12 @@ module.exports = {
             return helpers.abort(req, res, 401);
         }
 
-        const restaurant = Restaurants.fetchWithRestaurantID(req.body.id);
+        const restaurant = Restaurants.fetchWithRestaurantID(req.body.Restaurant_id);
         if (!restaurant) {
             return helpers.abort(406);
         }
 
-        await Comments.delete(req.body.id);
+        await Subscribed.delete(req.body.User_id, req.body.Restaurant_id);
         res.redirect('back');
     }
 }

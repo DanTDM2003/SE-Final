@@ -45,7 +45,11 @@
                                 <span>Restaurant's Category: <%= restaurant.category_name %></span>
                             </div>
                             <div class="action">
-                                <a href="#"><i class="fa fa-heart"></i></a>
+                                <form action="/subscribed" method="POST">
+                                    <input type="hidden" name="User_id" value="<%= user.id %>">
+                                    <input type="hidden" name="Restaurant_id" value="<%= restaurant.id %>">
+                                    <button><i class="fa fa-heart"></i></button>
+                                </form>
                             </div>
                         </div>
                     </div>

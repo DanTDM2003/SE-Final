@@ -5,6 +5,8 @@ const Users = require('../../models/Users.js');
 const Categories = require('../../models/Categories.js');
 const Restaurants = require('../../models/Restaurants.js');
 const Comments = require('../../models/Comments.js');
+const Subscribed = require('../../models/Subscribed.js');
+
 const RegisterForm = require('../Forms/RegisterForm.js');
 const PasswordForm = require('../Forms/PasswordForm.js');
 
@@ -58,7 +60,8 @@ module.exports = {
     show: async (req, res) => {
         const user = await Users.fetch({ Email: req.user.Email });
         const categories = await Categories.fetchAll();
-        const restaurant = await Restaurants.find({ Owner_id: req.user.id });
+        const restaurant = await Restaurants.fetchWithOwnerID(req.user.id);
+        const subscribed_restaurants = await Subscribed.fetchAllWithUserID(req.user.id);
         const comments = await Comments.fetchAllWithUserID([ req.user.id ]);
         delete user.Password;
 
@@ -72,7 +75,8 @@ module.exports = {
             user: req.user,
             categories: categories,
             restaurant: restaurant,
-            comments: comments
+            comments: comments,
+            subscribed_restaurants: subscribed_restaurants
         });
     },
 
