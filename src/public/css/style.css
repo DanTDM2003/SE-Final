@@ -1741,3 +1741,10 @@ button.btn {
         text-align: center; 
     } 
 }
+
+a.disabled {
+    pointer-events: none;
+    color: gray;
+    text-decoration: none;
+    cursor: not-allowed;
+  }

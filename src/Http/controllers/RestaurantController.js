@@ -12,10 +12,16 @@ module.exports = {
         if (req.query.category) {
             conditions[1] = req.query.category;
         }
-        const restaurants = await Restaurants.fetchAll(conditions);
+        let restaurants = await Restaurants.fetchAll(conditions);
         const categories = await Categories.fetchAll();
 
-        // console.log(restaurants);
+        const numOfPages = Math.ceil(restaurants.length / 9);
+
+        if (req.query.page && (!isNaN(+req.query.page)) && (+req.query.page > 0 && +req.query.page <= numOfPages)) {
+            restaurants = restaurants.slice((+req.query.page - 1) * 9, +req.query.page * 9);
+        } else {
+            restaurants = restaurants.slice(0, 9);
+        }
 
         res.render('restaurants/index', {
             title: 'Restaurants',
@@ -24,7 +30,8 @@ module.exports = {
             user: req.user,
             restaurants: restaurants,
             categories: categories,
-            query: req.query
+            query: req.query,
+            pages: numOfPages
         });
     },
 

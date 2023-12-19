@@ -78,14 +78,46 @@
             })
         }
 
-        function modifyURL() {
-            const urlObj = new URL(window.location.href);
-            console.log(window.location.href);
-            // Remove the 'page' parameter
-            urlObj.searchParams.delete('page');
-            
-            return urlObj.toString();
-        }
+        document.querySelectorAll('.pagination-item').forEach((item) => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                
+                const currentURL = new URL(window.location.href);
+                currentURL.searchParams.set('page', event.target.innerHTML);
+                
+                window.location.href = currentURL.toString();
+            })
+        })
+        
+        document.querySelectorAll('.previous-page').forEach((item) => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                
+                const currentURL = new URL(window.location.href);
+                if (!currentURL.searchParams.get('page') || isNaN(currentURL.searchParams.get('page'))) {
+                    currentURL.searchParams.set('page', 2);
+                } else {
+                    currentURL.searchParams.set('page', +currentURL.searchParams.get('page') - 1);
+                }
+                
+                window.location.href = currentURL.toString();
+            })
+        })
+        
+        document.querySelectorAll('.next-page').forEach((item) => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                
+                const currentURL = new URL(window.location.href);
+                if (!currentURL.searchParams.get('page') || isNaN(currentURL.searchParams.get('page'))) {
+                    currentURL.searchParams.set('page', 2);
+                } else {
+                    currentURL.searchParams.set('page', +currentURL.searchParams.get('page') + 1);
+                }
+                
+                window.location.href = currentURL.toString();
+            })
+        })
     </script>
 
     
