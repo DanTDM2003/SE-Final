@@ -9,12 +9,12 @@ module.exports = {
             return helpers.abort(req, res, 401);
         }
 
-        const restaurant = Restaurants.fetchWithRestaurantID(req.body.id);
+        const restaurant = await Restaurants.fetchWithRestaurantID(req.body.Restaurant_id);
         if (!restaurant) {
             return helpers.abort(406);
         }
 
-        if (!(await Subscribed.fetchAll([ req.body.User_id, req.body.id ]))) {
+        if ((await Subscribed.fetchAll([ req.body.User_id, req.body.Restaurant_id ])).length === 0) {
             await Subscribed.add(req.body);
         }
         
@@ -22,13 +22,19 @@ module.exports = {
     },
 
     destroy: async (req, res) => {
-        if (req.body.User_id != req.user.id) {
-            return helpers.abort(req, res, 401);
-        }
-
-        const restaurant = Restaurants.fetchWithRestaurantID(req.body.Restaurant_id);
-        if (!restaurant) {
-            return helpers.abort(406);
+        if (req.user.Role !== "Restaurant") {
+            if (req.body.User_id != req.user.id) {
+                return helpers.abort(req, res, 401);
+            }
+            const restaurant = await Restaurants.fetchWithRestaurantID(req.body.Restaurant_id);
+            if (!restaurant) {
+                return helpers.abort(406);
+            }
+        } else {
+            const subscribed = Subscribed.fetchAll([ req.body.User_id, req.body.Restaurant_id ]);
+            if (!subscribed) {
+                return helpers.abort(406);
+            }
         }
 
         await Subscribed.delete(req.body.User_id, req.body.Restaurant_id);

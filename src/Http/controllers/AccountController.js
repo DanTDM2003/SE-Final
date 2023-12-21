@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const he = require('he');
+const passport = require('passport');
 
 const Users = require('../../models/Users.js');
 const Categories = require('../../models/Categories.js');
@@ -10,8 +11,8 @@ const Subscribed = require('../../models/Subscribed.js');
 const RegisterForm = require('../Forms/RegisterForm.js');
 const PasswordForm = require('../Forms/PasswordForm.js');
 
-const helpers = require('../../utilities/helpers.js');
-
+const Cookies = require('../../utilities/Cookies.js');
+const JWTAction = require('../../utilities/JWTAction.js');
 
 module.exports = {
     create: (req, res) => {
@@ -58,14 +59,11 @@ module.exports = {
     },
 
     show: async (req, res) => {
-        const user = await Users.fetch({ Email: req.user.Email });
         const categories = await Categories.fetchAll();
         const restaurant = await Restaurants.fetchWithOwnerID(req.user.id);
         const subscribed_restaurants = await Subscribed.fetchAllWithUserID(req.user.id);
+        const subscribers = await Subscribed.fetchAllWithRestaurantID(restaurant.id);
         const comments = await Comments.fetchAllWithUserID([ req.user.id ]);
-        delete user.Password;
-
-        req.user = user;
 
         return res.render('account/show', {
             errors: null,
@@ -76,7 +74,8 @@ module.exports = {
             categories: categories,
             restaurant: restaurant,
             comments: comments,
-            subscribed_restaurants: subscribed_restaurants
+            subscribed_restaurants: subscribed_restaurants,
+            subscribers: subscribers
         });
     },
 
@@ -92,7 +91,7 @@ module.exports = {
                 return helpers.abort(req, res, 401)
             }
         }
-        const user = await Users.fetch({ Email: req.user.Email });
+        let user = await Users.fetch({ Email: req.user.Email });
 
         if (req.body.change) {
             const form = new PasswordForm();
@@ -120,7 +119,16 @@ module.exports = {
             });
         }
         await Users.update(Object.assign({ id: req.body.id }, req.body));
+        user = await Users.fetch({ Email: req.user.Email });
 
-        res.redirect('back');
+        const token = JWTAction.createJWT(user);
+        Cookies.createCookie(res, 'user', token, true, req.body.remember);
+        req.logout((err) => {
+            if (err) {
+                console.error(err);
+                return res.redirect('back'); // Handle any error and redirect if necessary
+            }
+            return res.redirect('back'); // Redirect the user after successfully logging out
+        });
     }
 }

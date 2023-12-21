@@ -9,7 +9,7 @@ module.exports = {
             return helpers.abort(req, res, 401);
         }
 
-        const restaurant = Restaurants.fetchWithRestaurantID(req.body.id);
+        const restaurant = await Restaurants.fetchWithRestaurantID(req.body.Restaurant_id);
         if (!restaurant) {
             return helpers.abort(406);
         }
@@ -23,8 +23,8 @@ module.exports = {
             return helpers.abort(req, res, 401);
         }
 
-        const restaurant = Restaurants.fetchWithRestaurantID(req.body.id);
-        if (!restaurant) {
+        const comment = await Comments.fetchAllWithRestaurantID([req.body.id]);
+        if (!comment) {
             return helpers.abort(406);
         }
 

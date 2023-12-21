@@ -6,8 +6,8 @@
 <div class="breadcrumb-wrap">
     <div class="container">
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Restaurants</a></li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/restaurants">Restaurants</a></li>
             <li class="breadcrumb-item active">Restaurant's Detail</li>
         </ul>
     </div>
@@ -23,20 +23,16 @@
                 <div class="row align-items-center product-detail-top">
                     <div class="col-md-5">
                         <div class="product-slider-single">
-                            <img src="/img/product-1.png" alt="Product Image">
-                            <img src="/img/product-2.png" alt="Product Image">
-                            <img src="/img/product-3.png" alt="Product Image">
+                            <img src="/img/thumbnails/<%= restaurant.Thumbnail %>" alt="Restauant Thumbnail">
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="product-content">
                             <div class="title"><h2><%= restaurant.Name %></h2></div>
                             <div class="ratting">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                                <% for (let i = 0; i < rating; i++) { %>
+                                    <i class="fa fa-star"></i>
+                                <% } %>
                             </div>
                             <div class="details mt-3">
                                 <span>Owner's Name: <%= restaurant.Fullname %></span><br>
@@ -82,22 +78,26 @@
                             </div>
                             <div id="menu" class="container tab-pane fade"><br>
                                 <h4>Menu</h4>
-                                
+                                <img src="/img/menus/<%= restaurant.Menu %>" alt="Restaurant Menu">
                             </div>
                             <div id="reviews" class="container tab-pane fade"><br>
                                 <div class="reviews-submitted d-flex flex-column gap-2">
-                                    <% for (let comment of comments) { %>
-                                        <div class="border border-3 rounded-3 p-3">
-                                            <div class="reviewer"><%= comment.Username %></div>
-                                            <div class="ratting">
-                                                <% for (let i = 0; i < comment.Rating; i++) { %>
-                                                    <i class="fa fa-star"></i>
-                                                <% } %>
+                                    <% if (comments.length !== 0) { %>
+                                        <% for (let comment of comments) { %>
+                                            <div class="border border-3 rounded-3 p-3">
+                                                <div class="reviewer"><%= comment.Username %></div>
+                                                <div class="ratting">
+                                                    <% for (let i = 0; i < comment.Rating; i++) { %>
+                                                        <i class="fa fa-star"></i>
+                                                    <% } %>
+                                                </div>
+                                                <span>
+                                                    <%= comment.Review %>
+                                                </span>
                                             </div>
-                                            <span>
-                                                <%= comment.Review %>
-                                            </span>
-                                        </div>
+                                        <% } %>
+                                    <% } else { %>
+                                        <div>There is no comment to this restaurant.</div>
                                     <% } %>
                                 </div>
                                 <% if (login) { %>
@@ -126,26 +126,7 @@
                 </div>
             </div>
             
-            <div class="col-lg-3">
-                <div class="sidebar-widget category">
-                    <h2 class="title">Category</h2>
-                    <ul>
-                        <li><a href="#">Lorem Ipsum</a><span>(83)</span></li>
-                        <li><a href="#">Cras sagittis</a><span>(198)</span></li>
-                        <li><a href="#">Vivamus</a><span>(95)</span></li>
-                        <li><a href="#">Fusce vitae</a><span>(48)</span></li>
-                        <li><a href="#">Vestibulum</a><span>(210)</span></li>
-                        <li><a href="#">Proin phar</a><span>(78)</span></li>
-                    </ul>
-                </div>
-                
-                <div class="sidebar-widget image">
-                    <h2 class="title">Featured Product</h2>
-                    <a href="#">
-                        <img src="/img/category-1.jpg" alt="Image">
-                    </a>
-                </div>
-            </div>
+            <%- include('../partials/sidebar.ejs') %>
         </div>
     </div>
 </div>

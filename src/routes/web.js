@@ -3,12 +3,17 @@ const router = express.Router();
 
 const RestaurantController = require('../Http/controllers/RestaurantController.js');
 
-router.get('/', (req, res) => {
+const Restaurants = require('../models/Restaurants.js');
+
+router.get('/', async (req, res) => {
+    const newlyOpenedRestaurants = await Restaurants.fetchAll();
+
     res.render('index', {
         title: 'Home',
         login: req.isAuthenticated(),
         url: req.path,
-        user: req.user
+        user: req.user,
+        newlyOpenedRestaurants: newlyOpenedRestaurants.slice(0, 10)
     });
 });
 

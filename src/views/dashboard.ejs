@@ -13,8 +13,6 @@
 </div>
 <!-- Breadcrumb End -->
 
-
-<!-- My Account Start -->
 <div class="my-account">
     <div class="container">
         <div class="row">
@@ -23,6 +21,7 @@
                     <a class="nav-link active" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab">Dashboard</a>
                     <a class="nav-link" id="users-nav" data-toggle="pill" href="#users-tab" role="tab">Users</a>
                     <a class="nav-link" id="restaurants-nav" data-toggle="pill" href="#restaurants-tab" role="tab">Restaurants</a>
+                    <a class="nav-link" id="categories-nav" data-toggle="pill" href="#categories-tab" role="tab">Categories</a>
                 </div>
             </div>
             <div class="col-md-9">
@@ -119,11 +118,68 @@
                             </div>
                         <% } %>
                     </div>
+                    <div class="tab-pane fade" id="categories-tab" role="tabpanel" aria-labelledby="categories-nav">
+                        <% if (categories.length === 0) { %>
+                            <span>There is no category that has been created.</span>
+                        <% } else { %>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let [index, category] of categories.entries()) { %>
+                                            <tr>
+                                                <td><%= index + 1 %></td>
+                                                <td><%= category.Name %></td>
+                                                <td>
+                                                    <form method="POST" action="/category/delete">
+                                                        <input type="hidden" name="id" value="<%= category.id %>">
+                                                        <button>Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } %>
+                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createCategory">
+                            Create new category
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="createCategory" tabindex="-1" aria-labelledby="createCategoryForm" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div style="background: rgb(239, 243, 250);" class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="createCategoryForm">Enter Category's Information</h5>
+                                        <button class="btn-close bg-transparent text-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/category/create" method="POST" class="row">
+                                            <div class="col-md-12">
+                                                <label for="Name">Category's Name</label>
+                                                <input type="text" id="Name" name="Name" placeholder="Name..." required>
+                                            </div>
+                                            <div class="modal-footer mt-4">
+                                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                                <button class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- My Account End -->
 
 <%- include('./partials/footer.ejs') %>

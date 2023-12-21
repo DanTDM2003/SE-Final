@@ -1,3 +1,11 @@
+const multer = require('multer');
+const sharp = require('sharp');
+const path = require('path');
+const upload = multer().fields([
+    { name: 'Thumbnail', maxCount: 1 },
+    { name: 'Menu', maxCount: 1 }
+]);
+
 const Restaurants = require('../../models/Restaurants.js');
 const Categories = require('../../models/Categories.js');
 const Comments = require('../../models/Comments.js');
@@ -40,6 +48,7 @@ module.exports = {
     show: async (req, res) => {
         const restaurant = await Restaurants.fetchWithRestaurantID(req.params.id);
         const comments = await Comments.fetchAllWithRestaurantID([ restaurant.id ]);
+        const categories = await Categories.fetchAll();
         
         res.render('restaurants/show', {
             title: restaurant.Name,
@@ -47,7 +56,9 @@ module.exports = {
             url: req.path,
             user: req.user,
             restaurant: restaurant,
-            comments: comments
+            comments: comments,
+            categories: categories,
+            rating: Math.round(comments.reduce((accumulator, obj) => accumulator + obj.Rating, 0) / comments.length)
         });
     },
 
@@ -62,7 +73,9 @@ module.exports = {
             return res.redirect('back');
         }
 
-        await Restaurants.add(req.body);
+        const images = { Thumbnail: req.files.Thumbnail[0].filename, Menu: req.files.Menu[0].filename };
+
+        await Restaurants.add(Object.assign(req.body, images));
         res.redirect('back');
     },
 
@@ -71,7 +84,32 @@ module.exports = {
             return helpers.abort(req, res, 401)
         }
         delete req.body.Owner_id;
-        Restaurants.update(req.body);
+
+        let images = {};
+        if (req.files) {
+            if (req.files.Thumbnail) {
+                images.Thumbnail = req.files.Thumbnail[0].filename;
+                const resizedImageBuffer = await sharp(req.files.Thumbnail[0].path).resize(300, 363).toBuffer();
+
+                // Define the output file path and name
+                const outputFilePath = path.join(__dirname, `/../../public/img/thumbnails/${req.files.Thumbnail[0].filename}`);
+            
+                // Save the resized image to the specified location
+                await sharp(resizedImageBuffer).toFile(outputFilePath);
+            }
+            if (req.files.Menu) {
+                images.Menu = req.files.Menu[0].filename;
+                const resizedImageBuffer = await sharp(req.files.Menu[0].path).resize(620, 726).toBuffer();
+
+                // Define the output file path and name
+                const outputFilePath = path.join(__dirname, `/../../public/img/menus/${req.files.Menu[0].filename}`);
+            
+                // Save the resized image to the specified location
+                await sharp(resizedImageBuffer).toFile(outputFilePath);
+            }
+        }
+
+        await Restaurants.update(Object.assign(req.body, images));
         res.redirect('back');
     },
 

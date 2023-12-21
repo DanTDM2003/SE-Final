@@ -9,6 +9,9 @@
                 <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="account-nav" data-toggle="pill" href="#account-tab" role="tab">Account Details</a>
                     <a class="nav-link" id="subscribed-nav" data-toggle="pill" href="#subscribed-tab" role="tab">Subscribed List</a>
+                    <% if (user.Role === "Restaurant") { %>
+                        <a class="nav-link" id="subscribers-nav" data-toggle="pill" href="#subscribers-tab" role="tab">Restaurant's Subscribers</a>
+                    <% } %>
                     <a class="nav-link" id="comments-nav" data-toggle="pill" href="#comments-tab" role="tab">Comments</a>
                     <% if (user.Role === "Restaurant") { %>
                         <a class="nav-link" id="restaurant-nav" data-toggle="pill" href="#restaurant-tab" role="tab">Your Restaurant</a>
@@ -92,6 +95,37 @@
                             </table>
                         </div>
                     </div>
+                    <% if (user.Role === "Restaurant") { %>
+                        <div class="tab-pane fade" id="subscribers-tab" role="tabpanel" aria-labelledby="subscribers-nav">
+                            <h4>Restaurant's Subscribers</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Subscriber's Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let [index, subscriber] of subscribers.entries()) { %>
+                                            <tr>
+                                                <td><%= index + 1 %></td>
+                                                <td><%= subscriber.Username %></td>
+                                                <td>
+                                                    <form method="POST" action="/subscribed/delete">
+                                                        <input type="hidden" name="User_id" value="<%= subscriber.User_id %>">
+                                                        <input type="hidden" name="Restaurant_id" value="<%= subscriber.Restaurant_id %>">
+                                                        <button>Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <% } %>
                     <div class="tab-pane fade" id="comments-tab" role="tabpanel" aria-labelledby="comments-nav">
                         <h4>Comments</h4>
                         <div class="table-responsive">
@@ -119,6 +153,7 @@
                                             <td>
                                                 <form method="POST" action="/comment/delete">
                                                     <input type="hidden" name="id" value="<%= comment.comment_id %>">
+                                                    <input type="hidden" name="User_id" value="<%= comment.User_id %>">
                                                     <button>Delete</button>
                                                 </form>
                                             </td>
@@ -146,7 +181,7 @@
                                                 <button class="btn-close bg-transparent text-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/restaurant/create" method="POST" class="row">
+                                                <form action="/restaurant/create" method="POST" class="row" enctype="multipart/form-data">
                                                     <input type="hidden" name="Owner_id" value="<%= user.id %>">
                                                     <div class="col-md-7">
                                                         <label for="Name">Restaurant's Name</label>
@@ -164,6 +199,14 @@
                                                             <% } %>
                                                         </select>
                                                     </div>
+                                                    <div class="input-group col-md-12">
+                                                        <label for="Thumbnail">Restaurant's Thumbnail</label>
+                                                        <input class="form-control" type="file" id="Thumbnail" name="Thumbnail" required>
+                                                    </div>
+                                                    <div class="input-group col-md-12">
+                                                        <label for="Menu">Restaurant's Menu</label>
+                                                        <input class="form-control" type="file" id="Menu" name="Menu" required>
+                                                    </div>
                                                     <div class="col-md-12">
                                                         <label for="Address">Restaurant's Address</label>
                                                         <input type="text" id="Address" name="Address" placeholder="Address..." required>
@@ -174,7 +217,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label for="Description">Restaurant's Description</label>
-                                                        <textarea id="Description" name="Description" placeholder="Description..."></textarea>
+                                                        <textarea class="w-100" id="Description" name="Description" placeholder="Description..."></textarea>
                                                     </div>
                                                     <div class="modal-footer mt-4">
                                                         <button type="reset" class="btn btn-secondary">Reset</button>
@@ -188,7 +231,7 @@
                             <% } else { %>
                                 <h4>My Restaurant</h4>
                                 <div class="row">
-                                    <form method="POST" action="/restaurant/update" class="col-md-12">
+                                    <form method="POST" action="/restaurant/update" enctype="multipart/form-data" class="col-md-12">
                                         <input type="hidden" name="Owner_id" value="<%= restaurant.Owner_id %>">
                                         <input type="hidden" name="id" value="<%= restaurant.id %>">
                                         <h5>Detail</h5>
@@ -198,9 +241,17 @@
                                         <p>Category:
                                             <select name="Category_id" class="form-select form-select-md" aria-label=".form-select-lg example">
                                                 <% for (let category of categories) { %>
-                                                    <option <%= category.Name === categories[restaurant.Category_id - 1].Name ? 'selected' : '' %> value="<%= category.id %>"><%= category.Name %></option>
+                                                    <option <%= restaurant.Category_id && category.Name === restaurant.category_name ? 'selected' : '' %> value="<%= category.id %>"><%= category.Name %></option>
                                                 <% } %>
                                             </select>
+                                        </p>
+                                        <p>
+                                            <label for="Thumbnail">Restaurant's Thumbnail</label>
+                                            <input class="form-control" type="file" id="Thumbnail" name="Thumbnail">
+                                        </p>
+                                        <p>
+                                            <label for="Menu">Restaurant's Menu</label>
+                                            <input class="form-control" type="file" id="Menu" name="Menu">
                                         </p>
                                         <p>Description:
                                             <textarea class="col-md-12" id="Description" name="Description" placeholder="Description..."><%= restaurant.Description %></textarea>

@@ -14,7 +14,9 @@ module.exports = async () => {
                 
                 INSERT INTO "Categories"("Name")
                 VALUES  ('Trà Sữa'),
-                        ('Hàn Quốc')
+                        ('Pizza'),
+                        ('Gà rán'),
+                        ('Kem')
                 `;
 
                 return cn.connection.query(createTableQuery)

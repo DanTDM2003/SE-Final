@@ -3,7 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const sanitizeHtml = require('sanitize-html');
-const flash = require('express-flash');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 const viewEngine = require('./config/viewEngine.js');
@@ -24,6 +25,8 @@ app.use(session({
 app.use(cookieParser(secret));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser. text({type: '/'}));
+app.use(cors());
 
 app.all((req, res, next) => {
     req.path = sanitizeHtml(req.path);

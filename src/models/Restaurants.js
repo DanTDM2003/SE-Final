@@ -9,7 +9,7 @@ module.exports = class Restaurant {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurants = await con.any(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name" AS restaurant_name, "Restaurants".*, "Categories"."Name" FROM ("Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id) JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE ("Restaurants"."Name" ILIKE '%' || $1 || '%') AND ("Categories"."Name" ILIKE '%' || $2 || '%')`, conditions);
+            const restaurants = await con.any(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "${tbName}"."Owner_id" = "Users".id) LEFT JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE ("Restaurants"."Name" ILIKE '%' || $1 || '%') AND (("Categories"."Name" ILIKE '%' || $2 || '%') OR ("Categories"."Name" IS NULL)) ORDER BY "Restaurants".id DESC`, conditions);
             return restaurants;
         } catch (error) {
             throw error;
@@ -24,7 +24,7 @@ module.exports = class Restaurant {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Restaurants".id = $1`, [id]);
+            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") LEFT JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Restaurants".id = $1`, [id]);
             return restaurant;
         } catch (error) {
             throw error;
@@ -39,7 +39,7 @@ module.exports = class Restaurant {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Owner_id" = $1`, [id]);
+            const restaurant = await con.oneOrNone(`SELECT "Users"."Fullname", "Users"."Username", "Users"."Email", "Users"."Mobile", "Restaurants"."Name", "Restaurants".*, "Categories"."Name" AS category_name FROM ("Users" JOIN "${tbName}" ON "Users".id = "${tbName}"."Owner_id") LEFT JOIN "Categories" ON "Restaurants"."Category_id" = "Categories".id WHERE "Owner_id" = $1`, [id]);
             return restaurant;
         } catch (error) {
             throw error;

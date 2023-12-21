@@ -17,9 +17,6 @@ module.exports = async () => {
                     FOREIGN KEY ("User_id") REFERENCES "Users"(id) ON DELETE CASCADE,
                     FOREIGN KEY ("Restaurant_id") REFERENCES "Restaurants"(id) ON DELETE CASCADE
                 );
-                
-                INSERT INTO "Comments"("Restaurant_id","User_id","Rating","Review")
-                VALUES  (1, 3, 5, 'Tôi thích quán này')
                 `;
 
                 return cn.connection.query(createTableQuery)

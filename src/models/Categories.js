@@ -20,11 +20,26 @@ module.exports = class Restaurant {
         }
     }
     
-    static async fetch(user, attributes='*') {
+    static async fetchWithName(name, attributes='*') {
         let con = null;
         try {
             con = await cn.connection.connect();
-            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}"`, [attributes]);
+            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}" WHERE "Name" LIKE $2`, [attributes, name]);
+            return users;
+        } catch (error) {
+            throw error;
+        } finally {
+            if (con) {
+                con.done();
+            }
+        }
+    }
+    
+    static async fetch(id, attributes='*') {
+        let con = null;
+        try {
+            con = await cn.connection.connect();
+            const users = await con.oneOrNone(`SELECT $1:name FROM "${tbName}" WHERE id = $2`, [attributes, id]);
             return users;
         } catch (error) {
             throw error;
@@ -35,9 +50,9 @@ module.exports = class Restaurant {
         }
     }
 
-    static async add(user) {
+    static async add(category) {
         try {
-            const rt = await db.add(tbName, user);
+            const rt = await db.add(tbName, category);
             return rt;
         } catch (error) {
             throw error;

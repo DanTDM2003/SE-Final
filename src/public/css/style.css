@@ -563,6 +563,23 @@ button.btn {
     background: #a53b37;
 }
 
+.product-item .product-image .product-action form button {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    padding: 6px 0;
+    margin-right: 5px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 18px;
+    background: #a53b37;
+}
+
+.product-item .product-image .product-action form button:hover {
+    color: #a53b37;
+    background: #ffffff;
+}
+
 .product-item .product-image .product-action a:last-child {
     margin-right: 0;
 }

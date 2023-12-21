@@ -15,13 +15,15 @@ module.exports = async () => {
                     "Tel" TEXT,
                     "Address" TEXT,
                     "Description" TEXT,
+                    "Thumbnail" TEXT,
+                    "Menu" TEXT,
 
                     FOREIGN KEY ("Owner_id") REFERENCES "Users"(id) ON DELETE CASCADE,
-                    FOREIGN KEY ("Category_id") REFERENCES "Categories"(id)
+                    FOREIGN KEY ("Category_id") REFERENCES "Categories"(id) ON DELETE SET NULL
                 );
                 
-                INSERT INTO "Restaurants"("Owner_id","Name","Category_id","Tel","Address")
-                VALUES  (3,'Hanuri',2,'0901306830','Nguyễn Tri Phương')
+                INSERT INTO "Restaurants"("Owner_id","Name","Category_id","Tel","Address","Thumbnail","Menu")
+                VALUES  (3,'Hanuri',1,'0901306830','Nguyễn Tri Phương',null,null)
                 `;
 
                 return cn.connection.query(createTableQuery)
