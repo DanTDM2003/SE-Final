@@ -41,11 +41,13 @@
                                 <span>Restaurant's Category: <%= restaurant.category_name %></span>
                             </div>
                             <div class="action">
-                                <form action="/subscribed" method="POST">
-                                    <input type="hidden" name="User_id" value="<%= user.id %>">
-                                    <input type="hidden" name="Restaurant_id" value="<%= restaurant.id %>">
-                                    <button><i class="fa fa-heart"></i></button>
-                                </form>
+                                <% if (user) { %>
+                                    <form action="/subscribed" method="POST">
+                                        <input type="hidden" name="User_id" value="<%= user.id %>">
+                                        <input type="hidden" name="Restaurant_id" value="<%= restaurant.id %>">
+                                        <button><i class="fa fa-heart"></i></button>
+                                    </form>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -119,6 +121,8 @@
                                             <button>Submit</button>
                                         </div>
                                     </form>
+                                <% } else { %>
+                                    <span>Please <a href="/login">log in</a> before comment</span>
                                 <% } %>
                             </div>
                         </div>

@@ -108,18 +108,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% for (let [index, subscriber] of subscribers.entries()) { %>
-                                            <tr>
-                                                <td><%= index + 1 %></td>
-                                                <td><%= subscriber.Username %></td>
-                                                <td>
-                                                    <form method="POST" action="/subscribed/delete">
-                                                        <input type="hidden" name="User_id" value="<%= subscriber.User_id %>">
-                                                        <input type="hidden" name="Restaurant_id" value="<%= subscriber.Restaurant_id %>">
-                                                        <button>Delete</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
+                                        <% if (Object.keys(subscribers).length !== 0) { %>
+                                            <% for (let [index, subscriber] of subscribers.entries()) { %>
+                                                <tr>
+                                                    <td><%= index + 1 %></td>
+                                                    <td><%= subscriber.Username %></td>
+                                                    <td>
+                                                        <form method="POST" action="/subscribed/delete">
+                                                            <input type="hidden" name="User_id" value="<%= subscriber.User_id %>">
+                                                            <input type="hidden" name="Restaurant_id" value="<%= subscriber.Restaurant_id %>">
+                                                            <button>Delete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
                                         <% } %>
                                     </tbody>
                                 </table>

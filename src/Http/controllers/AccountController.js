@@ -61,8 +61,9 @@ module.exports = {
     show: async (req, res) => {
         const categories = await Categories.fetchAll();
         const restaurant = await Restaurants.fetchWithOwnerID(req.user.id);
+
         const subscribed_restaurants = await Subscribed.fetchAllWithUserID(req.user.id);
-        const subscribers = await Subscribed.fetchAllWithRestaurantID(restaurant.id);
+        const subscribers = req.user.Role === "Restaurant" && restaurant ? await Subscribed.fetchAllWithRestaurantID(restaurant.id) : {};
         const comments = await Comments.fetchAllWithUserID([ req.user.id ]);
 
         return res.render('account/show', {

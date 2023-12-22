@@ -73,6 +73,13 @@ module.exports = {
             return res.redirect('back');
         }
 
+        const resizedThumbnail = await sharp(req.files.Thumbnail[0].path).resize(300, 363).toBuffer();
+        const outputThumbnailPath = path.join(__dirname, `/../../public/img/thumbnails/${req.files.Thumbnail[0].filename}`);
+        await sharp(resizedThumbnail).toFile(outputThumbnailPath);
+        const resizedMenu = await sharp(req.files.Thumbnail[0].path).resize(300, 363).toBuffer();
+        const outputMenuPath = path.join(__dirname, `/../../public/img/menus/${req.files.Menu[0].filename}`);
+        await sharp(resizedMenu).toFile(outputMenuPath);
+
         const images = { Thumbnail: req.files.Thumbnail[0].filename, Menu: req.files.Menu[0].filename };
 
         await Restaurants.add(Object.assign(req.body, images));

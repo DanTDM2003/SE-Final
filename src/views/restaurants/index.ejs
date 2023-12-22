@@ -45,11 +45,13 @@
                                             <img src="/img/thumbnails/<%= restaurant.Thumbnail %>" alt="Restaurant Thumbnail">
                                         </a>
                                         <div class="product-action d-flex justify-content-center">
-                                            <form action="/subscribed" method="POST">
-                                                <input type="hidden" name="User_id" value="<%= user.id %>">
-                                                <input type="hidden" name="Restaurant_id" value="<%= restaurant.id %>">
-                                                <button class="border-0"><i class="fa fa-heart"></i></button>
-                                            </form>
+                                            <% if (user) { %>
+                                                <form action="/subscribed" method="POST">
+                                                    <input type="hidden" name="User_id" value="<%= user.id %>">
+                                                    <input type="hidden" name="Restaurant_id" value="<%= restaurant.id %>">
+                                                    <button class="border-0"><i class="fa fa-heart"></i></button>
+                                                </form>
+                                            <% } %>
                                             <a href="/restaurant/<%= restaurant.id %>"><i class="fa fa-search"></i></a>
                                         </div>
                                     </div>

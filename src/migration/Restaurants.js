@@ -23,7 +23,7 @@ module.exports = async () => {
                 );
                 
                 INSERT INTO "Restaurants"("Owner_id","Name","Category_id","Tel","Address","Thumbnail","Menu")
-                VALUES  (3,'Hanuri',1,'0901306830','Nguyễn Tri Phương',null,null)
+                VALUES  (2,'Hanuri',1,'0901306830','Nguyễn Tri Phương',null,null)
                 `;
 
                 return cn.connection.query(createTableQuery)
