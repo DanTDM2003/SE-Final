@@ -35,27 +35,26 @@ module.exports = {
         Password = he.encode(Password);
         Role = he.encode(Role);
         Email = he.encode(Email);
+        
 
         if (form.validate(Fullname, Username, Password, Email)) {
             const user = await Users.fetch({ Email: Email, Password: Password });
             if (!user) {
                 await Users.add({ Fullname, Username, Password: bcrypt.hashSync(Password, 10), Email, Role });
-
-                req.login({ Fullname, Username, Role, Email }, (err) => {
-                    res.redirect('/');
+                return req.login({ Fullname, Username, Role, Email }, (err) => {
+                    return res.redirect('/');
                 })
             } else {
                 form.setError('credential', "The email is already used.");
             }
-        } else {
-            return res.render('registration/create', {
-                errors: form.getErrors(),
-                title: 'Registration',
-                login: null,
-                url: req.path,
-                user: req.user
-            });
         }
+        return res.render('registration/create', {
+            errors: form.getErrors(),
+            title: 'Registration',
+            login: req.isAuthenticated(),
+            url: req.path,
+            user: req.user
+        });
     },
 
     show: async (req, res) => {
